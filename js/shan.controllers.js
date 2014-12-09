@@ -16,7 +16,7 @@ app.controller('LoginCtrl', ['$scope','$http','$rootScope', function ($scope,$ht
 			$scope.err = "error";
 			return;
 		}
-		$http.post($rootScope.url+'/login',{"email" : $scope.user.email , "password" : $scope.user.password })
+		$http.post($rootScope.url+'/auth/login',{"email" : $scope.user.email , "password" : $scope.user.password })
 		.success(function(result){
 			if (result.status === 'failed') {
 				$scope.err = result.message;

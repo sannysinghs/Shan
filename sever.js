@@ -5,77 +5,25 @@ var io = require('socket.io')(http);
 var path = require('path');
 var bodyParser = require('body-parser');
 
-
-var UserModel = require("./users.js");
 app.use(bodyParser.json());
 app.use( express.static(path.join(__dirname,'/')) );
 
 app.set('port',process.env.PORT || 3001);
 
+app.set('models',path.join(__dirname , 'www/server/models'));
+app.set('routes',path.join(__dirname , 'www/server/routes'));
+app.set('app',path.join(__dirname , "www/app"));
+
+
+var user_routes = require( path.join(app.get('routes') , "user_routes.js" ))(app);
+var auth_routes = require( path.join(app.get('routes') , "auth_routes.js"))(app);
+
 app.get('/', function(req, res){
-  res.sendFile('index.html');
+  res.sendFile(path.join(app.get('app'),'index.html'));
 });
 
-app.get('/users',function(req,res){
-  UserModel.findAll(function(result){
-    res.json(result);
-  })
-});
-
-app.get('/users/:id',function(req,res){
-  if (req.params.id === 'undefined') {
-    res.json({error : "bad request or no parameter "});
-    return;
-  }
-  try{
-    UserModel.find(req.params.id,function(result){
-      res.json(result);
-    });
-
-  }catch(err){
-    res.json({error:err});
-  }
-});
-
-app.post('/users',function(req,res){
-  var user = req.body.user;
-  console.log(user);
-  UserModel.save(user,function(result){
-    res.json(result);
-  });
-});
-
-app.put('/users/:id',function(req,res){
-  UserModel.update(req.params.id,res.body,function(result){
-    res.json(result);
-  });
-});
-
-app.delete('/users/:id',function(req,res){
-  UserModel.remove(req.params.id,function(result){
-    res.json(result);
-  })
-});
-
-//auth
-app.post('/login',function(req,res){
-  var email = req.body.email;
-  var password = req.body.password;
-
-  UserModel.findByEmail(email,function(user){
-
-    if (user == null || user === 'undefined') {
-      res.json({"status" : "failed" , "message" : "invalid user"});
-      return;
-    };
-    
-    if (user.password !== password) {
-      res.json({"status" : "failed" , "message" : "Email and password mismatch"});
-      return;
-    };
-    res.json({"status" : "success" , "user" : user});
-  });
-});
+app.get('/users',user_routes);
+app.get('/auth',auth_routes);
 
 io.on('connection', function(socket){
 
@@ -94,6 +42,6 @@ io.on('connection', function(socket){
 
 });	
 
-http.listen(3001, function(){
+http.listen(app.get('port'), function(){
   console.log('listening on *: '+app.get('port'));
 });
