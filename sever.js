@@ -12,6 +12,22 @@ app.get('/', function(req, res){
   res.sendFile('index.html');
 });
 
+
+
+app.get('/users',function(req,res){
+
+});
+
+app.get('/users/:id',function(req,res){
+
+});
+
+app.post('/users',function(req,res){
+
+});
+
+
+
 io.on('connection', function(socket){
 
   socket.on('newbee',function(data){
