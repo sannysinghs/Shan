@@ -5,7 +5,7 @@ module.exports = function(app){
     app.get('/users',function(req,res){
       UserModel.findAll(function(result){
         res.json(result);
-      })
+      });
     });
 
     app.get('/users/:id',function(req,res){
@@ -40,7 +40,7 @@ module.exports = function(app){
     app.delete('/users/:id',function(req,res){
       UserModel.remove(req.params.id,function(result){
         res.json(result);
-      })
+      });
     });
 
     return app;   

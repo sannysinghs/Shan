@@ -7,9 +7,10 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use( express.static(path.join(__dirname,'/')) );
+app.use('/app',express.static(path.join(__dirname,'/www/app/')));
+
 
 app.set('port',process.env.PORT || 3001);
-
 app.set('models',path.join(__dirname , 'www/server/models'));
 app.set('routes',path.join(__dirname , 'www/server/routes'));
 app.set('app',path.join(__dirname , "www/app"));
