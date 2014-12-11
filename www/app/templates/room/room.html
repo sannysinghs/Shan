@@ -1,0 +1,32 @@
+<div class="row">
+        
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Panel Default</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="room in rooms">
+                        {{room.name}} - {{room.players.length}} <button class="btn btn-sm btn-default" ng-click="join($index)"> Join </button> 
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+<!-- 
+        <div class="col-md-4">
+             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Players</h3>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="room in rooms">
+                        {{room.name}} - {{room.player.length}} <button class="btn btn-sm" ng-click="join()"> Join </button> 
+                    </li>
+                    
+                </ul>
+            </div>
+        </div> -->
+</div>

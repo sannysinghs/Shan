@@ -27,10 +27,11 @@ app.get('/users',user_routes);
 app.get('/auth',auth_routes);
 
 io.on('connection', function(socket){
+  console.log('new user connected');
 
   socket.on('newbee',function(data){
   	console.log('New person request');
-  	socket.broadcast.emit('newbee',data);
+  	io.sockets.emit('newbee',data);
   });
 
   socket.on('drawcard',function(data){

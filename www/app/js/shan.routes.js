@@ -23,7 +23,18 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlR
             url : "/user/profile",
             templateUrl : "/app/templates/user/profile.html",
             controller : "UserCtrl"
+      })
+      .state('room',{
+            url : "/room",
+            templateUrl : "/app/templates/room/room.html",
+            controller : "RoomCtrl"
+      })
+      .state('game',{
+            url : "/game",
+            templateUrl : "/app/templates/room/game.html",
+            controller : "GameCtrl"
       });
+
 
       
       $urlRouterProvider.otherwise("/home");

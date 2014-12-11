@@ -1,14 +1,15 @@
 var app = angular.module('shan.services', []);
 app.constant('ShanConstant', {
 	"URL" : {
-		"MAIN" : "http://localhost:3001",
+		"MAIN" : window.location.hostname,
 		"AUTH" : {
-			"REGISTER" : "http://localhost:3001/#/auth/signup",
-			"LOGIN" : 	"http://localhost:3001/#/auth/login"
+			"REGISTER" : "/#/auth/signup",
+			"LOGIN" : 	"/#/auth/login"
 		},
 		"USER" : {
-			"PROFILE" : "http://localhost:3001/#/user/profile"
-		}
+			"PROFILE" : "/#/user/profile"
+		},
+		"GAME" : "/#/game"
 	},
 
 	"USER" : {
@@ -16,7 +17,7 @@ app.constant('ShanConstant', {
 	},
 
 	"SERVER" : {
-		"LOGIN" : "http://localhost:3001/auth/login"
+		"LOGIN" : "/auth/login"
 	}
 	
 });

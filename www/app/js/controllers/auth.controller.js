@@ -15,7 +15,6 @@ app.controller('AuthCtrl', ['$scope','$http','$rootScope','$window','LocalStorag
 				return;
 			}
 			LocalStorageService.saveItem("current_user",JSON.stringify(result.user));
-
 			//redirect to profile
 			ShanUtils.redirectTo(ShanConstant.URL.USER.PROFILE);
 			// $window.location.href = $rootScope.url+"#/user/profile/";

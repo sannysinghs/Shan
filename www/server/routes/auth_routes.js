@@ -9,15 +9,15 @@ app.post('/auth/login',function(req,res){
 
   UserModel.findByEmail(email,function(user){
 
-    if (user == null || user === 'undefined') {
+    if (user === null || user === 'undefined') {
       res.json({"status" : "failed" , "message" : "invalid user"});
       return;
-    };
+    }
     
     if (user.password !== password) {
       res.json({"status" : "failed" , "message" : "Email and password mismatch"});
       return;
-    };
+    }
     res.json({"status" : "success" , "user" : user});
 
   });

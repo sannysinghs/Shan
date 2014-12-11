@@ -1,7 +1,7 @@
 var app = angular.module('Shan', ['socket.io']);
 app.config(['$socketProvider',function ($socketProvider) {
 	$socketProvider.setConnectionUrl('http://localhost:3001');
-}])
+}]);
 app.run(['$rootScope','Game', function ($rootScope,Game) {
 	$rootScope.cards = Game.getCards();
 	$rootScope.users = [];
