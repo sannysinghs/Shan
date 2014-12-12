@@ -25,7 +25,7 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 	};
 
 	$scope.DrawCard = function(index){
-		SocketService.emit('drawcard',{ id : index , card : GameService.drawOneCard()  },function(socket,data){});
+		SocketService.emit('drawcard',{ id : index , card : $rootScope.cards.shift()  },function(socket,data){});
 	};
 
 	$scope.StartGame = function(){
@@ -34,6 +34,10 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 			SocketService.emit('start game',{ id : i , card : $scope.players[i].card },function(socket,data){});
 
 		}
+	};
+
+	$scope.LeaveGame = function(){
+
 	};
 
 }]);

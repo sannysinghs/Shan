@@ -5,6 +5,7 @@ var UserSchema = new mongoose.Schema({
 	name : String,
 	email : String,
 	password : String,
+	cash : Number,
 	date : Date
 });
 
@@ -44,6 +45,7 @@ module.exports = {
 			name : user.name,
 			email : user.email,
 			password : user.password,
+			cash : 0,
 			date : new Date()
 		},function(err,result){
 			if (err) {

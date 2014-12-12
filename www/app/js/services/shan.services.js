@@ -1,7 +1,7 @@
 var app = angular.module('shan.services', []);
 app.constant('ShanConstant', {
 	"URL" : {
-		"MAIN" : window.location.hostname,
+		"MAIN" : window.location.host,
 		"AUTH" : {
 			"REGISTER" : "/#/auth/signup",
 			"LOGIN" : 	"/#/auth/login"
@@ -17,7 +17,8 @@ app.constant('ShanConstant', {
 	},
 
 	"SERVER" : {
-		"LOGIN" : "/auth/login"
+		"LOGIN" : "/auth/login",
+		"ROOMS" : "/rooms"
 	}
 	
 });
