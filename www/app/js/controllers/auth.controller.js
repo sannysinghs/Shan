@@ -29,8 +29,9 @@ app.controller('AuthCtrl', ['$scope','$http','$rootScope','$window','LocalStorag
 
 	$scope.signup = function(user){
 		$scope.user = user;
-		$http.post($rootScope.url+"/users",{'user' : $scope.user}).success(function(success){
-			ShanUtils.redirectTo(ShanConstant.URL.AUTH.LOGIN);
+		$http.post(ShanConstant.SERVER.SIGNUP,{'user' : $scope.user}).success(function(success){
+			console.log(success);
+			// ShanUtils.redirectTo(ShanConstant.URL.AUTH.LOGIN);
 			// $window.location.href = $rootScope.url + "#/auth/login";	
 		}).error(function(result){
 			$scope.error = result;

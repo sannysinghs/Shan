@@ -63,8 +63,8 @@ module.exports = {
 			}
 			db.remove(result,function(result){
 				callback(result);
-			})
-		})
+			});
+		});
 	},
 	update : function(id,user,callback){
 
@@ -79,5 +79,5 @@ module.exports = {
 		    }
 		);
 	}
-}
+};
  

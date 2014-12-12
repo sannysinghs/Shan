@@ -34,9 +34,6 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlR
             templateUrl : "/app/templates/room/game.html",
             controller : "GameCtrl"
       });
-
-
-      
       $urlRouterProvider.otherwise("/home");
 
 }]);

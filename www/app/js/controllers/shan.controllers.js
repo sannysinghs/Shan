@@ -1,7 +1,8 @@
 var app = angular.module('shan.controllers', ['shan.services']);
 
-app.run(['$rootScope','SocketService','ShanConstant', function ($rootScope,SocketService,ShanConstant) {
+app.run(['$rootScope','SocketService','ShanConstant','LocalStorageService', function ($rootScope,SocketService,ShanConstant,LocalStorageService) {
 	SocketService.createInstance(ShanConstant.URL.MAIN);
+	$rootScope.current_user = JSON.parse(LocalStorageService.getItem(ShanConstant.USER.CURRENT_USER));
 }]);
 
 app.controller('HomeCtrl', ['$scope','$rootScope','$window','LocalStorageService','ShanConstant','ShanUtils', function ($scope,$rootScope,$window,LocalStorageService,ShanConstant,ShanUtils) {

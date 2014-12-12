@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var log = require('log');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
@@ -43,11 +44,16 @@ io.on('connection', function(socket){
     socket.emit('join room',{"players" : players});
   });
 
+  socket.on('new room',function(data){
+    io.sockets.emit('new room',data);
+  });
+
   socket.on('newbee',function(data){
   	players[socket.id] = data.player;
-    socket.broadcast.emit('update room',data.player);
+    //sending alert to everyone else in same room
+    socket.broadcast.to(data.room).emit('update room',data.player);
+    //sending to everyone in same room to update players in room
     io.sockets.emit('newbee',data);
-
   });
 
   socket.on('drawcard',function(data){

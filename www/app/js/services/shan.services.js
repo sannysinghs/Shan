@@ -9,6 +9,7 @@ app.constant('ShanConstant', {
 		"USER" : {
 			"PROFILE" : "/#/user/profile"
 		},
+		"ROOM" : "/#/room",
 		"GAME" : "/#/game"
 	},
 
@@ -18,7 +19,9 @@ app.constant('ShanConstant', {
 
 	"SERVER" : {
 		"LOGIN" : "/auth/login",
-		"ROOMS" : "/rooms"
+		"ROOMS" : "/rooms",
+		"SIGNUP" : "/users",
+		"USERS" : "/users/"
 	}
 	
 });

@@ -1,13 +1,17 @@
 var mongoose = require("mongoose");
 // mongoose.connect('mongodb://localhost/Shan');
 mongoose.createConnection('mongodb://localhost/Shan');
+var Schema = mongoose.Schema;
 
 var RoomSchema = new mongoose.Schema({
 	name : String,
 	level : String,
 	visibility : String,
 	max : String,
-	players : [String],
+	players : [{
+		type : Schema.ObjectId,
+		ref : 'users'
+	}],
 	created_at : Date
 });
 
@@ -16,7 +20,7 @@ var db = mongoose.model("rooms",RoomSchema);
 
 module.exports = {
 	findAll : function(callback){
-		db.find({},function(err,result){
+		db.find({}).populate("players").exec(function(err,result){
 			if(err){
 				callback(null);
 			}else{

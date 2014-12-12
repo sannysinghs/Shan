@@ -4,7 +4,7 @@ app.run(['$rootScope','GameService',function ($rootScope,GameService) {
 	$rootScope.cards = GameService.getCards();
 }]);
 
-app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService',function ($rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService) {
+app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService','$http',function ($rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService,$http) {
 	
 	$scope.players = $rootScope.rooms[0].players;
 
@@ -36,8 +36,14 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 		}
 	};
 
-	$scope.LeaveGame = function(){
-
+	$scope.LeaveGame = function(index){
+		var user = $rootScope.current_user;
+		var i = LocalStorageService.getItem("current_player_index");
+		$rootScope.rooms[LocalStorageService.getItem("current_user_room")].players.splice(i,1);
+		// $http.delete('/user/'+user._id,{},function(result){
+			
+		// });
+		console.log($rootScope.rooms);
 	};
 
 }]);
