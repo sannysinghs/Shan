@@ -4,11 +4,10 @@ app.run(['$rootScope','GameService',function ($rootScope,GameService) {
 	$rootScope.cards = GameService.getCards();
 }]);
 
-app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService','$http',function ($rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService,$http) {
+app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService','$http','ShanUtils',function ($rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService,$http,ShanUtils) {
 	
-	$scope.players = $rootScope.rooms[0].players;
+	$scope.players = $rootScope.rooms[LocalStorageService.getItem("current_player_room")].players;
 
-	var current_user = JSON.parse(LocalStorageService.getItem(ShanConstant.USER.CURRENT_USER));
 
 	SocketService.on('drawcard',function(socket,data){
 		$scope.players[data.id].card.push(data.card);
@@ -21,7 +20,7 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 
 	$scope.isCurrentUser = function(id){
 
-		return (id === current_user._id );
+		return (id === $rootScope.current_user._id );
 	};
 
 	$scope.DrawCard = function(index){
@@ -36,14 +35,30 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 		}
 	};
 
-	$scope.LeaveGame = function(index){
+	$scope.LeaveGame = function() {
 		var user = $rootScope.current_user;
-		var i = LocalStorageService.getItem("current_player_index");
-		$rootScope.rooms[LocalStorageService.getItem("current_user_room")].players.splice(i,1);
-		// $http.delete('/user/'+user._id,{},function(result){
+
+		var pIndex = LocalStorageService.getItem("current_player_index_in_room");
+		var rIndex = LocalStorageService.getItem("current_player_room");
+
+		var room = $rootScope.rooms[rIndex];
+		
+		
+		// Simply remove player in backend
+		$http.delete('/rooms/players/'+room._id+'/'+user._id,{}).success(function(result){
+			// Say everyone including me that i am out 
+			SocketService.emit('newbee leave',{"room" : room._id,"rIndex" : rIndex , "pIndex" : pIndex},function(socket,data){});
+			//Leave completely from a game and also from current room
+			LocalStorageService.removeItem('current_player_index_in_room');
+			LocalStorageService.removeItem('current_player_room');
+			//go back to room and find another room
+			ShanUtils.redirectTo(ShanConstant.URL.ROOM);
+		})
+		.error(function(result){
+			console.log(result);
 			
-		// });
-		console.log($rootScope.rooms);
+		});
+		
 	};
 
 }]);

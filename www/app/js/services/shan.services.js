@@ -10,11 +10,13 @@ app.constant('ShanConstant', {
 			"PROFILE" : "/#/user/profile"
 		},
 		"ROOM" : "/#/room",
-		"GAME" : "/#/game"
+		"GAME" : "/#/room/play"
 	},
 
 	"USER" : {
-		"CURRENT_USER" : "current_user"
+		"CURRENT_USER" : "current_user",
+		"PLAYER_INDEX" : "current_player_index_in_room",
+		"ROOM_INDEX" : "current_player_room"
 	},
 
 	"SERVER" : {

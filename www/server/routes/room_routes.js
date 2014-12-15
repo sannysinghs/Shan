@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(app,log){
     
     var RoomModel = require(app.get("models")+"/rooms.js");
 
@@ -38,6 +38,18 @@ module.exports = function(app){
               res.json(data);
             });
           }
+      });
+    });
+
+    app.delete('/rooms/players/:room/:user',function(req,res){
+      RoomModel.find(req.params.room,function(result){
+        if (result !== 'undefinded' || result !== null ) {
+          result.players.splice(result.players.indexOf(req.params.user),1);
+          RoomModel.update(req.params.room,result,function(data){
+              // console.log(data);
+              res.json(data);
+          });
+        }
       });
     });
 

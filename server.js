@@ -19,7 +19,7 @@ app.set('app',path.join(__dirname , "www/app"));
 
 var user_routes = require( path.join(app.get('routes') , "user_routes.js" ))(app);
 var auth_routes = require( path.join(app.get('routes') , "auth_routes.js"))(app);
-var room_routes = require( path.join(app.get('routes') , "room_routes.js"))(app);
+var room_routes = require( path.join(app.get('routes') , "room_routes.js"))(app,log);
 
 app.get('/', function(req, res){
   res.sendFile(path.join(app.get('app'),'index.html'));
@@ -49,8 +49,10 @@ io.on('connection', function(socket){
   });
 
   socket.on('newbee',function(data){
-  	players[socket.id] = data.player;
-    //sending alert to everyone else in same room
+    //Join a specific room
+    socket.join(data.room);
+    //sending alert to everyone else in same room about joining
+    //notification
     socket.broadcast.to(data.room).emit('update room',data.player);
     //sending to everyone in same room to update players in room
     io.sockets.emit('newbee',data);
@@ -64,10 +66,16 @@ io.on('connection', function(socket){
     socket.broadcast.emit('start game',data);
   });
 
-  socket.on('disconnect',function(){
-    console.log('user has left');
-    socket.broadcast.emit('leave room',players[socket.id]);
-    delete players[socket.id];
+  socket.on('newbee leave',function(data){
+    
+    //sending everyone to remove me from gloab room 
+    io.sockets.emit('newbee leave',data);
+    //sending alert to everyone else in same room about leaving
+    //notification
+    //update index
+    socket.broadcast.to(data.room).emit('update index on newbee leave',data);
+    //leave room
+    socket.leave(data.room);
   });
 
 });	

@@ -29,8 +29,8 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlR
             templateUrl : "/app/templates/room/room.html",
             controller : "RoomCtrl"
       })
-      .state('game',{
-            url : "/game",
+      .state('room.play',{
+            url : "/play",
             templateUrl : "/app/templates/room/game.html",
             controller : "GameCtrl"
       });
