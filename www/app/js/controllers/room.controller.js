@@ -9,12 +9,6 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 		console.log('Error fetching rooms');
 	});
 
-	// SocketService.emit('join room',{},function(socket,data){});
-	
-	// SocketService.on('join room',function(socket,data){
-	// 	// console.log(data);
-	// });
-
 	$scope.JoinRoom = function(index){
 		var room = $rootScope.rooms[index];
 		
@@ -24,7 +18,7 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 			"email" : $rootScope.current_user.email,
 			"cash" :  $rootScope.current_user.cash || 0,
 			"draw" : false,
-			"card" : []
+			"score" : {} //player total pt [pt,double/triple]
 		};
 
 		//update players array in server

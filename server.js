@@ -34,16 +34,6 @@ var players = {};
 io.on('connection', function(socket){
   console.log(socket.id+' has joined the server');
 
-  // socket.join('myroom',function(socket){
-  //   console.log('palyer user a room');
-  //   io.to('my room').emit('event');
-  // });
-
-  socket.on('join room',function(data){
-    console.log('Join the room');
-    socket.emit('join room',{"players" : players});
-  });
-
   socket.on('new room',function(data){
     io.sockets.emit('new room',data);
   });

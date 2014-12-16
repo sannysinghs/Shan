@@ -11,11 +11,14 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 
 	SocketService.on('drawcard',function(socket,data){
 		$scope.players[data.id].card.push(data.card);
+		$scope.players[data.id].score = GameService.calcScore($scope.players[data.id].card); //duplicate 
 		$scope.players[data.id].draw = true;
 	});
 
 	SocketService.on('start game',function(socket,data){
 		$scope.players[data.id].card = data.card;
+		$scope.players[data.id].score = GameService.calcScore(data.card); //duplicate 
+		
 	});
 
 	$scope.isCurrentUser = function(id){
@@ -30,6 +33,7 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 	$scope.StartGame = function(){
 		for (var i = 0; i < $scope.players.length; i++) {
 			$scope.players[i].card = $rootScope.cards.splice(0,2);
+			$scope.players[i].score = GameService.calcScore($scope.players[i].card);
 			SocketService.emit('start game',{ id : i , card : $scope.players[i].card },function(socket,data){});
 
 		}

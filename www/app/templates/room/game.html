@@ -14,9 +14,14 @@
         	  	<ul>
         	  		<li>{{player.name}}<em>{{player.email}}</em></li>
         	  		<li><a href="">{{player.cash}} /kyats</a></li>
+                    <li>Score - {{ player.score }}</li>
                     <li>Card Num {{  (player.card.length > 0)?  player.card : "Not started" }}</li>
                     <li ng-show="isCurrentUser(player._id)"><button class="btn btn-primary" ng-class="{ 'disabled' : player.draw }" ng-click="DrawCard($index)">Draw Card</button></li>    
         	  	</ul>
+                
         	  </div>
+               <div class="row">
+                 <img  ng-repeat="card in player.card" class="img-rounded col-md-3" ng-src="/www/app/img/card/{{card}}.png" alt="">
+               </div>
 			</div>
 			</div>
