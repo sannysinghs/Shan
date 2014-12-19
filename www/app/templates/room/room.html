@@ -27,7 +27,7 @@
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="room in rooms">
-                            {{room.name}} - {{room.players.length}} out of {{room.max}} <button ng-class="{ 'disabled' : room.max <= room.players.length }" class="btn btn-sm btn-default" ng-click="JoinRoom($index)"> Join </button>  <button class="btn btn-sm btn-danger" ng-click="RemoveRoom($index)"> Remove </button> 
+                            {{room.name}} - {{room.players.length}} out of {{room.max}} <button ng-class="{ 'disabled' : room.max <= room.players.length }" class="btn btn-sm btn-default" ng-click="JoinRoom($index)"> Join </button>  <button ng-class="{ 'disabled' : room.players.length !=0 }" class="btn btn-sm btn-danger" ng-click="RemoveRoom($index)"> Remove </button> 
                         </li>
                         
                     </ul>

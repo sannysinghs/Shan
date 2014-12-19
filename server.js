@@ -29,7 +29,8 @@ app.get('/users',user_routes);
 app.get('/auth',auth_routes);
 app.get('/rooms',room_routes);
 
-var players = {};
+var players = [];
+var player = {};
 
 io.on('connection', function(socket){
   console.log(socket.id+' has joined the server');
@@ -38,7 +39,14 @@ io.on('connection', function(socket){
     io.sockets.emit('new room',data);
   });
 
+  socket.on('remove room',function(data){
+    io.sockets.emit('remove room',data);
+  });
+
   socket.on('newbee',function(data){
+    // players.push(JSON.parse(data.player)._id);
+    players[socket.id] = JSON.parse(data.player);
+    player = data.player;
     //Join a specific room
     socket.join(data.room);
     //sending alert to everyone else in same room about joining
@@ -57,7 +65,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('newbee leave',function(data){
-    
+
     //sending everyone to remove me from gloab room 
     io.sockets.emit('newbee leave',data);
     //sending alert to everyone else in same room about leaving
@@ -66,6 +74,15 @@ io.on('connection', function(socket){
     socket.broadcast.to(data.room).emit('update index on newbee leave',data);
     //leave room
     socket.leave(data.room);
+
+    delete players[socket.id];
+  });
+
+  socket.on('disconnect',function(type){
+    console.log(player);
+    setTimeout(function(){
+        socket.emit("disconnect me",player);
+    },1000);
   });
 
 });	

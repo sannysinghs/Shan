@@ -1,5 +1,5 @@
 var app = angular.module('shan.services');
-app.factory('GameService', ['$rootScope',function ($rootScope) {
+app.factory('GameService', ['$rootScope','LocalStorageService','ShanConstant','$http',function ($rootScope,LocalStorageService,ShanConstant,$http) {
 	return {
 		getCards : function(){
 			var j_arr = [];
@@ -42,7 +42,15 @@ app.factory('GameService', ['$rootScope',function ($rootScope) {
 
 			}
 			return score;
-		}
+		},
+		isPlayerHasRoom : function(){
+			
+			// return ( typeof(LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)) !== 'undefined' || typeof(LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)) != null );
+		},
+
+		giveMeListOfPlayers : function(room){
+			return $rootScope.rooms[LocalStorageService.getItem(room)].players;
+		}	
 	};
 }]);
 

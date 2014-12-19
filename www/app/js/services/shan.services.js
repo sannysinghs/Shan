@@ -27,12 +27,12 @@ app.constant('ShanConstant', {
 	}
 	
 });
-app.factory('ShanUtils', ['$window',function ($window) {
+app.factory('ShanUtils', ['$window','$http','$q',function ($window,$http,$q) {
 	
 
 	return {
 		redirectTo : function(url){
 			$window.location.href = url;
-		} 		
+		}
 	};
 }]);

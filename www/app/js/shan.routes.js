@@ -26,8 +26,13 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlR
       })
       .state('room',{
             url : "/room",
+            resolve :{
+                  RoomPromiseObj : function($http){
+                    return $http({method: 'GET', url: '/rooms'});
+                  }
+            },
             templateUrl : "/app/templates/room/room.html",
-            controller : "RoomCtrl"
+            controller : "RoomCtrl", 
       })
       .state('room.play',{
             url : "/play",

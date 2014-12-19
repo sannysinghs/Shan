@@ -1,13 +1,17 @@
 var app = angular.module('shan.controllers');
+app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService','LocalStorageService','ShanUtils','$http' ,'RoomPromiseObj', function ($rootScope,$scope,ShanConstant,SocketService,LocalStorageService,ShanUtils,$http,RoomPromiseObj) {
+	console.log('Start Game Controller');
 
-app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService','LocalStorageService','ShanUtils','$http' , function ($rootScope,$scope,ShanConstant,SocketService,LocalStorageService,ShanUtils,$http) {
+	if (RoomPromiseObj.statusText !== 'OK') {
+		return ;
+	}
+	
+	// if (LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)) {
+	// 	return;
+	// }
 
-	$http.get("/rooms").success(function(result){
-		$rootScope.rooms = result;
-		
-	}).error(function(error){
-		console.log('Error fetching rooms');
-	});
+
+	$rootScope.rooms = RoomPromiseObj.data;
 
 	$scope.JoinRoom = function(index){
 		var room = $rootScope.rooms[index];
@@ -42,7 +46,6 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 	$scope.AddRoom = function(room){
 		$scope.room = room;
 		$scope.room.players = [];
-
 		$http.post("/rooms",{'room' : $scope.room }).success(function(success){
 			SocketService.emit('new room',{"room" : success},function(){});
 		}).error(function(result){
@@ -55,7 +58,7 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 	$scope.RemoveRoom = function(index){
 		var room = $rootScope.rooms[index];
 		$http.delete('/rooms/'+room._id,{}).success(function(result){
-			$rootScope.rooms.splice(index,1);
+			SocketService.emit("remove room",{room : index},function(){});
 		}).error(function(result){
 
 		});	
@@ -64,6 +67,11 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 	SocketService.on('new room',function(socket,data){
 		$rootScope.rooms.push(data.room);
 	});
+
+	SocketService.on('remove room',function(socket,data){
+		$rootScope.rooms.splice(data.room,1);
+	});
+
 
 	//notify the everyone else in same room about new player 
 	SocketService.on('update room',function(socket,data){
@@ -74,6 +82,7 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 	SocketService.on('newbee',function(socket,data){
 		console.log('Received new bee');
 		$rootScope.rooms[data.index].players.push(JSON.parse(data.player));
+		console.log($rootScope.rooms);
 		
 	});
 

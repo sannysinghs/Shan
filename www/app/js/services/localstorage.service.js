@@ -8,7 +8,7 @@ app.factory('LocalStorageService', ['$window',function ($window) {
 		},
 
 		getItem : function(key){
-			if ( $window.localStorage.getItem(key) === '' || $window.localStorage.getItem(key) === 'undefined'  ) {
+			if ( $window.localStorage.getItem(key) === '' || $window.localStorage.getItem(key) === 'undefined' || $window.localStorage.getItem(key) === null ) {
 				return false;
 			}else{
 				return $window.localStorage.getItem(key);

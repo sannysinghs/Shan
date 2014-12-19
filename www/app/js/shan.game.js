@@ -1,4 +1,4 @@
-var app = angular.module('Shan', ['socket.io']);
+var app = angular.module('Shan', ['socket.io','ui-bootstrap']);
 app.config(['$socketProvider',function ($socketProvider) {
 	$socketProvider.setConnectionUrl('http://localhost:3001');
 }]);
