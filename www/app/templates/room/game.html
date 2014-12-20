@@ -8,19 +8,18 @@
 
             <div class="row">
                 <button class="btn btn-primary btn-sm" ng-click="StartGame()">Start Game</button>
-                <button class="btn btn-warning btn-sm" ng-click="LeaveGame()">Leave Game</button>
             </div>  
 
 			<div class="row">
 			 <div class="col-md-4" ng-repeat="player in players" ng-class="{'col-md-offset-4' : $index%2 != 0 }" >
         	  <div class="col-md-1"><img src="http://ar.gravatar.com/favicon.ico" alt="" class="img img-circle"></div>
-        	  <div class="col-md-3">
+        	  <div class="col-md-7" ng-class="{well : banker._id === player._id }">
         	  	<ul>
         	  		<li>{{player.name}}<em>{{player.email}}</em></li>
         	  		<li><a href="">{{player.cash}} /kyats</a></li>
                     <li>Score - {{ player.score }}</li>
                     <li>Card Num {{  (player.card.length > 0)?  player.card : "Not started" }}</li>
-                    <li ng-show="isCurrentUser(player._id)"><button class="btn btn-primary" ng-class="{ 'disabled' : player.draw }" ng-click="DrawCard($index)">Draw Card</button></li>    
+                    <li ng-show="isCurrentUser(player._id)"><button class="btn btn-xs btn-primary" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="DrawCard($index)">Draw Card</button> <button class="btn btn-xs btn-warning" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="Hold($index)">Hold</button></li>    
         	  	</ul>
                 
         	  </div>

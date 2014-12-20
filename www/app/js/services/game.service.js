@@ -44,13 +44,21 @@ app.factory('GameService', ['$rootScope','LocalStorageService','ShanConstant','$
 			return score;
 		},
 		isPlayerHasRoom : function(){
-			
 			// return ( typeof(LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)) !== 'undefined' || typeof(LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)) != null );
 		},
 
 		giveMeListOfPlayers : function(room){
 			return $rootScope.rooms[LocalStorageService.getItem(room)].players;
-		}	
+		},
+
+		myRoomIndex : function(){
+			return LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX);
+		},
+
+		myRoomID : function(){
+			return $rootScope.rooms[LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)]._id;
+		},
+		
 	};
 }]);
 

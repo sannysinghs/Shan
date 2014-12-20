@@ -45,7 +45,7 @@ module.exports = {
 			name : user.name,
 			email : user.email,
 			password : user.password,
-			cash : 0,
+			cash : 50,
 			date : new Date()
 		},function(err,result){
 			if (err) {

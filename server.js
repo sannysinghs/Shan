@@ -60,6 +60,11 @@ io.on('connection', function(socket){
     io.sockets.emit('drawcard',data);
   });
 
+  socket.on('hold',function(data){
+     console.log(data);
+     io.to(data.room_id).emit('hold',data);
+  });
+
   socket.on('start game',function(data){
     socket.broadcast.emit('start game',data);
   });
@@ -74,16 +79,15 @@ io.on('connection', function(socket){
     socket.broadcast.to(data.room).emit('update index on newbee leave',data);
     //leave room
     socket.leave(data.room);
-
     delete players[socket.id];
   });
 
-  socket.on('disconnect',function(type){
-    console.log(player);
-    setTimeout(function(){
-        socket.emit("disconnect me",player);
-    },1000);
-  });
+  // socket.on('disconnect',function(type){
+  //   console.log(player);
+  //   setTimeout(function(){
+  //       socket.emit("disconnect me",player);
+  //   },1000);
+  // });
 
 });	
 

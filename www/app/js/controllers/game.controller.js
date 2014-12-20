@@ -1,6 +1,6 @@
 var app = angular.module('shan.controllers');
-app.controller('GameCtrl', ['$modal','$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService','$http','ShanUtils',
-	function ($modal,$rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService,$http,ShanUtils) {
+app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanConstant','GameService','SocketService','$http','ShanUtils',
+	function ($rootScope,$scope,LocalStorageService,ShanConstant,GameService,SocketService,$http,ShanUtils) {
 
 	
 	if(!LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)){
@@ -9,8 +9,7 @@ app.controller('GameCtrl', ['$modal','$rootScope','$scope','LocalStorageService'
 	}
 
 	$rootScope.cards = GameService.getCards();
-
-	$scope.players = $rootScope.rooms[LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)].players;
+	$scope.players = GameService.giveMeListOfPlayers(ShanConstant.USER.ROOM_INDEX);
 
 	SocketService.on('drawcard',function(socket,data){
 		$scope.players[data.id].card.push(data.card);
@@ -18,10 +17,15 @@ app.controller('GameCtrl', ['$modal','$rootScope','$scope','LocalStorageService'
 		$scope.players[data.id].draw = true;
 	});
 
+	SocketService.on('hold',function(socket,data){
+		$scope.players[data.id].hold = true;
+	});
+
 	SocketService.on('start game',function(socket,data){
-		$scope.players[data.id].card = data.card;
-		$scope.players[data.id].score = GameService.calcScore(data.card); //duplicate 
-		
+		// $scope.players[data.id].card = data.card;
+		// $scope.players[data.id].score = GameService.calcScore(data.card); //duplicate 
+		$scope.players = data.players;
+		// $scope.banker = GameService.iniBanker($scope.players);
 	});
  
 	SocketService.on('disconnect me',function(socket,data){
@@ -34,16 +38,26 @@ app.controller('GameCtrl', ['$modal','$rootScope','$scope','LocalStorageService'
 	};
 
 	$scope.DrawCard = function(index){
-		SocketService.emit('drawcard',{ id : index , card : $rootScope.cards.shift()  },function(socket,data){});
+		SocketService.emit('drawcard',{ id : index , card : $rootScope.cards.shift() },function(socket,data){});
+	};
+
+	$scope.Hold = function(index){
+		SocketService.emit('hold',{ id : index  , room_id :  GameService.myRoomID() },function(socket,data){});	
 	};
 
 	$scope.StartGame = function(){
 		for (var i = 0; i < $scope.players.length; i++) {
 			$scope.players[i].card = $rootScope.cards.splice(0,2);
 			$scope.players[i].score = GameService.calcScore($scope.players[i].card);
-			SocketService.emit('start game',{ id : i , card : $scope.players[i].card },function(socket,data){});
-
 		}
+		SocketService.emit('start game',{ "players" :  $scope.players },function(socket,data){});
+	};
+
+
+	$scope.initBanker = function(){
+		$scope.players_copy = $scope.players;		
+		$scope.banker = $scope.players_copy.pop();
+		
 	};
 
 	$scope.LeaveGame = function() {
@@ -64,11 +78,9 @@ app.controller('GameCtrl', ['$modal','$rootScope','$scope','LocalStorageService'
 			LocalStorageService.removeItem(ShanConstant.USER.ROOM_INDEX);
 			//go back to room and find another room
 			ShanUtils.redirectTo(ShanConstant.URL.ROOM);
-
-
 		})
 		.error(function(result){
-			console.log(result);
+			console.log("err");
 			
 		});
 		

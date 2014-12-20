@@ -46,7 +46,7 @@ module.exports = function(app,log){
         if (result !== 'undefinded' || result !== null ) {
           result.players.splice(result.players.indexOf(req.params.user),1);
           RoomModel.update(req.params.room,result,function(data){
-              // console.log(data);
+              console.log(data);
               res.json(data);
           });
         }
