@@ -49,6 +49,7 @@ io.on('connection', function(socket){
     player = data.player;
     //Join a specific room
     socket.join(data.room);
+    console.log(data.room);
     //sending alert to everyone else in same room about joining
     //notification
     socket.broadcast.to(data.room).emit('update room',data.player);
@@ -66,7 +67,9 @@ io.on('connection', function(socket){
   });
 
   socket.on('start game',function(data){
-    socket.broadcast.emit('start game',data);
+    console.log(data.room);
+    io.sockets.to(data.room).emit('start game',data);
+    // socket.broadcast.emit('start game',data);
   });
 
   socket.on('newbee leave',function(data){

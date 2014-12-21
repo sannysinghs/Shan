@@ -22,10 +22,18 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 	});
 
 	SocketService.on('start game',function(socket,data){
-		// $scope.players[data.id].card = data.card;
-		// $scope.players[data.id].score = GameService.calcScore(data.card); //duplicate 
+
+		$rootScope.cards = data.cards;
 		$scope.players = data.players;
-		// $scope.banker = GameService.iniBanker($scope.players);
+
+		if ($scope.banker !== undefined ) {
+			$scope.players[$scope.banker].banker = false;
+		}
+
+		$scope.banker = data.banker;
+		$scope.players[$scope.banker].banker = true;
+		
+		
 	});
  
 	SocketService.on('disconnect me',function(socket,data){
@@ -50,14 +58,8 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 			$scope.players[i].card = $rootScope.cards.splice(0,2);
 			$scope.players[i].score = GameService.calcScore($scope.players[i].card);
 		}
-		SocketService.emit('start game',{ "players" :  $scope.players },function(socket,data){});
-	};
 
-
-	$scope.initBanker = function(){
-		$scope.players_copy = $scope.players;		
-		$scope.banker = $scope.players_copy.pop();
-		
+		SocketService.emit('start game',{ "cards" : $rootScope.cards , "players" : $scope.players, "room" : GameService.myRoomID() , "banker" : GameService.initBanker($scope.players) },function(socket,data){});
 	};
 
 	$scope.LeaveGame = function() {

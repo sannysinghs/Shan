@@ -59,6 +59,11 @@ app.factory('GameService', ['$rootScope','LocalStorageService','ShanConstant','$
 			return $rootScope.rooms[LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)]._id;
 		},
 		
+		initBanker : function(players){
+			return Math.floor(Math.random() * players.length);
+
+		}
+
 	};
 }]);
 

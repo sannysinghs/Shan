@@ -13,7 +13,7 @@
 			<div class="row">
 			 <div class="col-md-4" ng-repeat="player in players" ng-class="{'col-md-offset-4' : $index%2 != 0 }" >
         	  <div class="col-md-1"><img src="http://ar.gravatar.com/favicon.ico" alt="" class="img img-circle"></div>
-        	  <div class="col-md-7" ng-class="{well : banker._id === player._id }">
+        	  <div class="col-md-7" ng-class="{well : player.banker }">
         	  	<ul>
         	  		<li>{{player.name}}<em>{{player.email}}</em></li>
         	  		<li><a href="">{{player.cash}} /kyats</a></li>
