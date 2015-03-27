@@ -23,6 +23,7 @@ app.controller('RoomCtrl', ['$rootScope','$scope','ShanConstant', 'SocketService
 			"cash" :  $rootScope.current_user.cash || 0,
 			"draw" : false,
 			"banker" : false,
+			"ready" : false,
 			"score" : {} //player total pt [pt,double/triple]
 		};
 

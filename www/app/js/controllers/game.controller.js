@@ -36,6 +36,11 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 		
 	});
  
+	SocketService.on('player ready',function(socket,data){
+		$rootScope.rooms[data.room].players[data.player].amount = data.amount;
+		$rootScope.rooms[data.room].players[data.player].ready = true;		
+	});
+
 	SocketService.on('disconnect me',function(socket,data){
 		console.log('Left');
 		// $scope.PlayerLeave(data.player);
@@ -60,6 +65,12 @@ app.controller('GameCtrl', ['$rootScope','$scope','LocalStorageService','ShanCon
 		}
 
 		SocketService.emit('start game',{ "cards" : $rootScope.cards , "players" : $scope.players, "room" : GameService.myRoomID() , "banker" : GameService.initBanker($scope.players) },function(socket,data){});
+	};
+
+	$scope.ready = function(player){
+		$scope.player = player;		
+		SocketService.emit('player ready',{"room" : GameService.myRoomIndex() , "player" : GamerService.myIndex(), "amount" : $scope.player.amount });
+	
 	};
 
 	$scope.LeaveGame = function() {

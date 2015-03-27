@@ -19,8 +19,15 @@
         	  		<li><a href="">{{player.cash}} /kyats</a></li>
                     <li>Score - {{ player.score }}</li>
                     <li>Card Num {{  (player.card.length > 0)?  player.card : "Not started" }}</li>
-                    <li ng-show="isCurrentUser(player._id)"><button class="btn btn-xs btn-primary" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="DrawCard($index)">Draw Card</button> <button class="btn btn-xs btn-warning" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="Hold($index)">Hold</button></li>    
+        
+                    <div ng-show="{{ player.cards.length > 0 }}">
+                        <li ng-show="isCurrentUser(player._id)"><button class="btn btn-xs btn-primary" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="DrawCard($index)">Draw Card</button> <button class="btn btn-xs btn-warning" ng-class="{ 'disabled' : player.draw || player.hold }" ng-click="Hold($index)">Hold</button></li>    
+                    </div> 
         	  	</ul>
+                <div>
+                    <input type="text" ng-model="player.amount" >
+                    <button class="btn btn-sm btn-info" ng-click="ready()"> Ready </button>
+                </div>
                 
         	  </div>
                <div class="row">

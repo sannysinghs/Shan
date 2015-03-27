@@ -55,10 +55,14 @@ app.factory('GameService', ['$rootScope','LocalStorageService','ShanConstant','$
 			return LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX);
 		},
 
+		myIndex : function(){
+			return LocalStorageService.getItem(ShanConstant.USER.PLAYER_INDEX);	
+		},
+
 		myRoomID : function(){
 			return $rootScope.rooms[LocalStorageService.getItem(ShanConstant.USER.ROOM_INDEX)]._id;
 		},
-		
+
 		initBanker : function(players){
 			return Math.floor(Math.random() * players.length);
 
